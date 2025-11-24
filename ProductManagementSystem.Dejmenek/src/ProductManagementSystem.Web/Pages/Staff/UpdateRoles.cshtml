@@ -1,0 +1,41 @@
+@page
+@model ProductManagementSystem.Web.Pages.Staff.UpdateRolesModel
+@{
+    ViewData["Title"] = "Update User Roles";
+}
+
+<h2>Update Roles for @Model.UserRolesUpdateViewModel.UserName</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="UserRolesUpdateViewModel.UserId" />
+
+    <div class="mb-3">
+        <label asp-for="UserRolesUpdateViewModel.UserName" class="form-label"></label>
+        <input asp-for="UserRolesUpdateViewModel.UserName" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Roles</label>
+        <div>
+            @for (int i = 0; i < Model.UserRolesUpdateViewModel.Roles.Count; i++)
+            {
+                <div class="form-check">
+                    <input asp-for="UserRolesUpdateViewModel.Roles[@i].IsSelected" class="form-check-input" />
+                    <input type="hidden" asp-for="UserRolesUpdateViewModel.Roles[@i].RoleId" />
+                    <input type="hidden" asp-for="UserRolesUpdateViewModel.Roles[@i].RoleName" />
+                    <label class="form-check-label" asp-for="UserRolesUpdateViewModel.Roles[@i].RoleName">
+                        @Model.UserRolesUpdateViewModel.Roles[i].RoleName
+                    </label>
+                </div>
+            }
+        </div>
+        <span asp-validation-summary="ModelOnly" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Roles</button>
+    <a asp-page="Details" asp-route-userId="@Model.UserRolesUpdateViewModel.UserId" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

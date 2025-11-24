@@ -1,0 +1,290 @@
+@page
+@using ProductManagementSystem.Domain
+@using ProductManagementSystem.Shared
+@model ProductManagementSystem.Web.Pages.Products.ProductsModel
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="table-controls">
+    <div class="table-controls-left">
+        <div class="dropdown">
+            <a class="table-action-btn add-btn text-decoration-none dropdown-toggle"
+            role="button" href="#"
+            data-bs-toggle="dropdown"
+            aria-expended="false">
+                Add
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/Products/Create/CreateLaptop">Laptop</a></li>
+                <li><a class="dropdown-item" href="/Products/Create/CreateDesktop">Desktop</a></li>
+            </ul>
+        </div>
+        <button class="table-action-btn delete-btn"
+        aria-label="Delete selected items"
+        onclick="submitBulkDelete()">
+            <i class="bi bi-trash"></i>
+            <span>Delete Selected</span>
+        </button>
+    </div>
+    <form method="get" id="tableControlsForm">
+        <div class="table-controls-right">
+            <div class="page-size-container">
+                <select class="form-select"
+                        asp-for="@Model.Filter.PageSize"
+                onchange="document.getElementById('tableControlsForm').submit();"
+                aria-label="Select page size">
+                    @foreach (var size in Enum.GetValues(typeof(PageSize)).Cast<PageSize>())
+                    {
+                        <option value="@size" selected="@(Model.Filter.PageSize == size ? "selected" : null)">
+                            @((int)size)
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="search-container">
+                <input asp-for="@Model.Filter.Search" type="search" class="table-search" placeholder="Search" aria-label="Search table" />
+            </div>
+        </div>
+        <input type="hidden" asp-for="@Model.Filter.PageNumber" value="1" />
+    </form>
+</div>
+
+<table class="generic-table my-3">
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox"
+                class="form-check-input select-all-checkbox"
+                aria-label="Select all rows"
+                onclick="toggleAll(this.checked)" />
+            </th>
+            <th>
+                <div class="d-flex align-items-center gap-2">
+                    <p class="m-0">Name</p>
+                    <div class="d-flex flex-column">
+                        <a asp-route-Filter.PageNumber="1"
+                           asp-route-Filter.SortColumn="Name"
+                           asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                           asp-route-Filter.SortDirection="@SortingDirection.Ascending"
+                           asp-route-Filter.Search="@(Model.Filter.Search)"
+                           aria-label="Sort Name ascending">
+                            <i class="bi bi-arrow-up"></i>
+                        </a>
+                        <a asp-route-Filter.PageNumber="1"
+                           asp-route-Filter.SortColumn="Name"
+                           asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                           asp-route-Filter.SortDirection="@SortingDirection.Descending"
+                           asp-route-Filter.Search="@(Model.Filter.Search)"
+                           aria-label="Sort Name descending">
+                            <i class="bi bi-arrow-down"></i>
+                        </a>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex align-items-center gap-2">
+                    <p class="m-0">Price</p>
+                    <div class="d-flex flex-column">
+                        <a asp-route-Filter.PageNumber="1"
+                           asp-route-Filter.SortColumn="Price"
+                           asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                           asp-route-Filter.SortDirection="@SortingDirection.Ascending"
+                           asp-route-Filter.Search="@(Model.Filter.Search)"
+                           aria-label="Sort Price ascending">
+                            <i class="bi bi-arrow-up"></i>
+                        </a>
+                        <a asp-route-Filter.PageNumber="1"
+                           asp-route-Filter.SortColumn="Price"
+                           asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                           asp-route-Filter.SortDirection="@SortingDirection.Descending"
+                           asp-route-Filter.Search="@(Model.Filter.Search)"
+                           aria-label="Sort Price descending">
+                            <i class="bi bi-arrow-down"></i>
+                        </a>
+                    </div>
+                </div>
+            </th>
+            <th>Is Active</th>
+            <th>
+                <div class="d-flex align-items-center gap-2">
+                    <p class="m-0">Date Added</p>
+                    <div class="d-flex flex-column">
+                        <a asp-route-Filter.PageNumber="1"
+                           asp-route-Filter.SortColumn="DateAdded"
+                           asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                           asp-route-Filter.SortDirection="@SortingDirection.Ascending"
+                           asp-route-Filter.Search="@(Model.Filter.Search)"
+                           aria-label="Sort Date Added ascending">
+                            <i class="bi bi-arrow-up"></i>
+                        </a>
+                        <a asp-route-Filter.PageNumber="1"
+                           asp-route-Filter.SortColumn="DateAdded"
+                           asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                           asp-route-Filter.SortDirection="@SortingDirection.Descending"
+                           asp-route-Filter.Search="@(Model.Filter.Search)"
+                           aria-label="Sort Date Added descending">
+                            <i class="bi bi-arrow-down"></i>
+                        </a>
+                    </div>
+                </div>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.PagedProducts.Items)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox"
+                    class="form-check-input row-checkbox"
+                    aria-label="Select row"
+                    value="@product.Id" />
+                </td>
+                <td>
+                    @product.Name
+                </td>
+                <td>
+                    @product.Price.ToString("C")
+                </td>
+                <td>
+                    <label class="status-toggle">
+                        <input type="checkbox" checked=@(product.IsActive ? "checked" : "") aria-label="Toggle status" />
+                        <span class="status-slider"></span>
+                    </label>
+                </td>
+                <td>
+                    @product.DateAdded
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <a asp-page="Update/@product.EditPageName" asp-route-productId="@product.Id" title="Edit" class="action-icon edit" aria-label="Edit item">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a href="./Products/Details/@product.Id" title="Details" class="action-icon view" aria-label="View details">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <form method="post" asp-page-handler="DeleteSingle" asp-route-id="@product.Id" class="d-inline">
+                            <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
+                            <input type="hidden" name="Filter.SortColumn" value="@Model.Filter.SortColumn" />
+                            <input type="hidden" name="Filter.SortDirection" value="@Model.Filter.SortDirection" />
+                            <input type="hidden" name="Filter.Search" value="@Model.Filter.Search" />
+                            <button type="submit" class="btn btn-sm btn-danger" aria-label="Delete item">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form method="post" asp-page-handler="DeleteSelected" id="bulkDeleteForm">
+</form>
+
+@{
+    int maxDisplayedPages = 5;
+    int startPage = Math.Max(1, Model.PagedProducts.CurrentPage - 2);
+    int endPage = Math.Min(Model.PagedProducts.TotalPages, startPage + maxDisplayedPages - 1);
+
+    if (endPage - startPage < maxDisplayedPages - 1)
+    {
+        startPage = Math.Max(1, endPage - maxDisplayedPages + 1);
+    }
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <span>
+        Showing @((Model.PagedProducts.TotalCount == 0) ? 0 : ((Model.PagedProducts.CurrentPage - 1) * (int)Model.PagedProducts.PageSize + 1))
+        to @(Math.Min(Model.PagedProducts.CurrentPage * (int)Model.PagedProducts.PageSize, Model.PagedProducts.TotalCount))
+        of @Model.PagedProducts.TotalCount entries
+    </span>
+    <nav>
+        <ul class="pagination">
+            @if (Model.PagedProducts.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-route-Filter.PageNumber="@(Model.PagedProducts.CurrentPage - 1)"
+                       asp-route-Filter.Search="@(Model.Filter.Search)"
+                       asp-route-Filter.SortColumn="@Model.Filter.SortColumn"
+                       asp-route-Filter.SortDirection="@Model.Filter.SortDirection"
+                       asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                       aria-label="Go to previous page">
+                        <i aria-hidden="true" class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+            }
+            @if (startPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-route-Filter.PageNumber="1"
+                       asp-route-Filter.Search="@(Model.Filter.Search)"
+                       asp-route-Filter.SortColumn="@Model.Filter.SortColumn"
+                       asp-route-Filter.SortDirection="@Model.Filter.SortDirection"
+                       asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                       aria-label="Go to page 1">
+                        1
+                    </a>
+                </li>
+                @if (startPage > 2)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link" aria-hidden="true">...</span>
+                    </li>
+                }
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == Model.PagedProducts.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-route-Filter.PageNumber="@i"
+                       asp-route-Filter.Search="@(Model.Filter.Search)"
+                       asp-route-Filter.SortColumn="@Model.Filter.SortColumn"
+                       asp-route-Filter.SortDirection="@Model.Filter.SortDirection"
+                       asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                       aria-label="Go to page @i">
+                        @i
+                    </a>
+                </li>
+            }
+
+            @if (endPage < Model.PagedProducts.TotalPages)
+            {
+                if (endPage < Model.PagedProducts.TotalPages - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link" aria-hidden="true">...</span>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-route-Filter.PageNumber="@Model.PagedProducts.TotalPages"
+                       asp-route-Filter.Search="@(Model.Filter.Search)"
+                       asp-route-Filter.SortColumn="@Model.Filter.SortColumn"
+                       asp-route-Filter.SortDirection="@Model.Filter.SortDirection"
+                       asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                       aria-label="Go to last page">@Model.PagedProducts.TotalPages</a>
+                </li>
+            }
+            @if (Model.PagedProducts.CurrentPage < Model.PagedProducts.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-route-Filter.PageNumber="@(Model.PagedProducts.CurrentPage + 1)"
+                       asp-route-Filter.Search="@(Model.Filter.Search)"
+                       asp-route-Filter.SortColumn="@Model.Filter.SortColumn"
+                       asp-route-Filter.SortDirection="@Model.Filter.SortDirection"
+                       asp-route-Filter.PageSize="@Model.PagedProducts.PageSize"
+                       aria-label="Go to next page">
+                        <i aria-hidden="true" class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

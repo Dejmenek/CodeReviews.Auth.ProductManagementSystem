@@ -1,0 +1,124 @@
+@page
+@using ProductManagementSystem.Domain
+@model ProductManagementSystem.Web.Pages.Products.Update.UpdateDesktopModel
+
+<form method="post">
+    <input type="hidden" asp-for="DesktopViewModel.Id" />
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Update Desktop</h1>
+        <button class="btn btn-primary" type="submit">Update Desktop</button>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <fieldset class="d-flex flex-column gap-3 border border-2 rounded p-3 mb-4">
+                <legend class="text-uppercase small fs-5 fw-bold letter-spacing-2 m-0">Product</legend>
+                <div>
+                    <label class="form-label" asp-for="DesktopViewModel.Name"></label>
+                    <input class="form-control" asp-for="DesktopViewModel.Name" name="DesktopViewModel.Name" />
+                    <span class="text-danger" asp-validation-for="DesktopViewModel.Name"></span>
+                </div>
+            </fieldset>
+            <fieldset class="d-flex flex-column gap-3 border border-2 rounded p-3 mb-4">
+                <legend class="text-uppercase small fs-5 fw-bold letter-spacing-2 m-0">Specifications</legend>
+                <div>
+                    <label class="form-label" asp-for="DesktopViewModel.CaseType"></label>
+                    <select class="form-select" asp-for="DesktopViewModel.CaseType" asp-items="Html.GetEnumSelectList<CaseType>()">
+                        <option value="">Select a case type</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="DesktopViewModel.CaseType"></span>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="DesktopViewModel.RamSize"></label>
+                    <select class="form-select" asp-for="DesktopViewModel.RamSize" asp-items="Html.GetEnumSelectList<RamSize>()">
+                        <option value="">Select a RAM size</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="DesktopViewModel.RamSize"></span>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="DesktopViewModel.GraphicsCard"></label>
+                    <input class="form-control" asp-for="DesktopViewModel.GraphicsCard" name="DesktopViewModel.GraphicsCard" />
+                    <span class="text-danger" asp-validation-for="DesktopViewModel.GraphicsCard"></span>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="DesktopViewModel.OperatingSystem"></label>
+                    <select class="form-select" asp-for="DesktopViewModel.OperatingSystem" asp-items="Html.GetEnumSelectList<SystemType>()">
+                        <option value="">Select an operating system</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="DesktopViewModel.OperatingSystem"></span>
+                </div>
+                <fieldset class="d-flex flex-column gap-3 my-1">
+                    <legend class="text-uppercase small fw-bold letter-spacing-2 m-0">Processor</legend>
+
+                    <div>
+                        <label class="form-label" asp-for="DesktopViewModel.Brand"></label>
+                        <select class="form-select" asp-for="DesktopViewModel.Brand" asp-items="Html.GetEnumSelectList<Brand>()">
+                            <option value="">Select a processor brand</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="DesktopViewModel.Brand"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="DesktopViewModel.Model"></label>
+                        <input class="form-control" asp-for="DesktopViewModel.Model" name="DesktopViewModel.Model" />
+                        <span class="text-danger" asp-validation-for="DesktopViewModel.Model"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="DesktopViewModel.CoreCount"></label>
+                        <input class="form-control" asp-for="DesktopViewModel.CoreCount" name="DesktopViewModel.CoreCount" />
+                        <span class="text-danger" asp-validation-for="DesktopViewModel.CoreCount"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="DesktopViewModel.ClockSpeedGHz"></label>
+                        <input class="form-control" asp-for="DesktopViewModel.ClockSpeedGHz" name="DesktopViewModel.ClockSpeedGHz" />
+                        <span class="text-danger" asp-validation-for="DesktopViewModel.ClockSpeedGHz"></span>
+                    </div>
+                </fieldset>
+                <fieldset class="d-flex flex-column gap-3 my-1">
+                    <legend class="text-uppercase small fw-bold letter-spacing-2 m-0">Storage Capacity</legend>
+
+                    <div>
+                        <label class="form-label" asp-for="DesktopViewModel.StorageCapacity"></label>
+                        <input class="form-control" asp-for="DesktopViewModel.StorageCapacity" name="DesktopViewModel.StorageCapacity" />
+                        <span class="text-danger" asp-validation-for="DesktopViewModel.StorageCapacity"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="DesktopViewModel.StorageUnit"></label>
+                        <select class="form-select" asp-for="DesktopViewModel.StorageUnit" asp-items="Html.GetEnumSelectList<StorageUnit>()">
+                            <option value="">Select a storage unit</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="DesktopViewModel.StorageUnit"></span>
+                    </div>
+                </fieldset>
+            </fieldset>
+        </div>
+        <div class="col-md-4">
+            <fieldset class="d-flex flex-column gap-3 border border-2 rounded p-3 mb-4">
+                <legend class="text-uppercase small fs-5 fw-bold letter-spacing-2 m-0">Product Status</legend>
+                <div>
+                    <label class="d-flex flex-column" asp-for="DesktopViewModel.IsActive">
+                        <p class="form-label">IsActive</p>
+                        <div class="status-toggle">
+                            <input type="checkbox" asp-for="DesktopViewModel.IsActive" name="DesktopViewModel.IsActive" aria-label="Toggle status" />
+                            <span class="status-slider"></span>
+                        </div>
+                    </label>
+                    <span class="text-danger" asp-validation-for="DesktopViewModel.IsActive"></span>
+                </div>
+            </fieldset>
+            <fieldset class="d-flex flex-column gap-3 border border-2 rounded p-3 mb-4">
+                <legend class="text-uppercase small fs-5 fw-bold letter-spacing-2 m-0">Pricing</legend>
+                <div>
+                    <label class="form-label" asp-for="DesktopViewModel.Price"></label>
+                    <input class="form-control" asp-for="DesktopViewModel.Price" name="DesktopViewModel.Price" />
+                    <span class="text-danger" asp-validation-for="DesktopViewModel.Price"></span>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>

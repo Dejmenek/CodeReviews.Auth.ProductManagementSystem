@@ -1,0 +1,103 @@
+@page
+@model ProductManagementSystem.Web.Pages.Staff.DetailsModel
+@{
+    string emailBadge = Model.StaffMember.EmailConfirmed ? "bg-success" : "bg-warning text-dark";
+}
+
+<div class="container mt-1">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 pb-2 border-bottom">
+        <div>
+            <h2 class="h4 fw-bold text-primary mb-1">
+                User Profile: @(Model.StaffMember.UserName)
+            </h2>
+            <p class="text-muted small mb-0">Review account details and role assignments.</p>
+        </div>
+        <div class="d-flex gap-2">
+            @if (!Model.StaffMember.Roles.Contains("Admin"))
+            {
+                <a asp-page="./UpdateRoles" asp-route-userId="@Model.StaffMember.Id" class="btn btn-primary">
+                    <i class="bi bi-people me-1"></i> Manage Roles
+                </a>
+                <a asp-page="./Update" asp-route-userId="@Model.StaffMember.Id" class="btn btn-info">
+                    <i class="bi bi-pencil-square me-1"></i> Edit User
+                </a>
+            }
+            <a asp-page="./Index" class="btn btn-dark">
+                <i class="bi bi-arrow-left me-1"></i> Back to Users
+            </a>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow h-100">
+                <div class="card-header bg-dark text-white">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <small>@Model.StaffMember.UserName</small>
+                        <div class="d-flex gap-2">
+                            <span class="badge rounded-pill @emailBadge">
+                                @(Model.StaffMember.EmailConfirmed ? "Email Confirmed" : "Email Unconfirmed")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <div class="text-uppercase small fw-bold letter-spacing-2 mb-2">Contact</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                                <span class="text-muted">
+                                    <i class="bi bi-envelope me-2"></i>Email
+                                </span>
+                                <span>
+                                    <a href="mailto:@Model.StaffMember.Email" class="link-dark text-decoration-none">@Model.StaffMember.Email</a>
+                                </span>
+                            </li>
+                            <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                                <span class="text-muted">
+                                    <i class="bi bi-telephone me-2"></i>Phone
+                                </span>
+                                <span>@(string.IsNullOrWhiteSpace(Model.StaffMember.PhoneNumber) ? "-" : Model.StaffMember.PhoneNumber)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow h-100">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold">Roles & Permissions</span>
+                    @if (!Model.StaffMember.Roles.Contains("Admin"))
+                    {
+                        <a asp-page="UpdateRoles" asp-route-userId="@Model.StaffMember.Id" class="btn btn-sm btn-primary">
+                            <i class="bi bi-people me-1"></i> Manage
+                        </a>
+                    }
+                </div>
+                <div class="card-body">
+                    @if (Model.StaffMember.Roles == null || Model.StaffMember.Roles.Count == 0)
+                    {
+                        <div class="text-center text-muted py-3">
+                            <i class="bi bi-shield-lock mb-2" style="font-size:1.4rem;"></i>
+                            <div>No roles assigned</div>
+                            <div class="mt-2">
+                                <a asp-page="UpdateRoles" asp-route-userId="@Model.StaffMember.Id" class="btn btn-sm btn-outline-primary">Assign Roles</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var role in Model.StaffMember.Roles.OrderBy(x => x))
+                            {
+                                <span class="badge rounded-pill bg-primary">
+                                    <i class="bi bi-shield-check me-1"></i>@role
+                                </span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

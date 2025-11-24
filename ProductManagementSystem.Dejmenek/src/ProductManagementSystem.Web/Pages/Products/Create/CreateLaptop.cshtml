@@ -1,0 +1,132 @@
+@page
+@using ProductManagementSystem.Domain
+@model ProductManagementSystem.Web.Pages.Products.Create.CreateLaptopModel
+
+<form method="post">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Create Laptop</h1>
+        <button class="btn btn-primary" type="submit">Create Laptop</button>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <fieldset class="d-flex flex-column gap-3 border border-2 rounded p-3 mb-4">
+                <legend class="text-uppercase fs-5 fw-bold letter-spacing-2 m-0">Product</legend>
+                <div>
+                    <label class="form-label" asp-for="LaptopViewModel.Name"></label>
+                    <input class="form-control" asp-for="LaptopViewModel.Name" name="LaptopViewModel.Name" />
+                    <span class="text-danger" asp-validation-for="LaptopViewModel.Name"></span>
+                </div>
+            </fieldset>
+            <fieldset class="d-flex flex-column gap-3 border border-2 rounded p-3 mb-4">
+                <legend class="text-uppercase fs-5 fw-bold letter-spacing-2 m-0">Specifications</legend>
+                <div>
+                    <label class="form-label" asp-for="LaptopViewModel.ScreenSize"></label>
+                    <input class="form-control" asp-for="LaptopViewModel.ScreenSize" name="LaptopViewModel.ScreenSize" />
+                    <span class="text-danger" asp-validation-for="LaptopViewModel.ScreenSize"></span>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="LaptopViewModel.BatteryLife"></label>
+                    <input class="form-control" asp-for="LaptopViewModel.BatteryLife" name="LaptopViewModel.BatteryLife" />
+                    <span class="text-danger" asp-validation-for="LaptopViewModel.BatteryLife"></span>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="LaptopViewModel.WebcamQuality"></label>
+                    <input class="form-control" asp-for="LaptopViewModel.WebcamQuality" name="LaptopViewModel.WebcamQuality" />
+                    <span class="text-danger" asp-validation-for="LaptopViewModel.WebcamQuality"></span>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="LaptopViewModel.RamSize"></label>
+                    <select class="form-select" asp-for="LaptopViewModel.RamSize" asp-items="Html.GetEnumSelectList<RamSize>()">
+                        <option value="">Select a RAM size</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="LaptopViewModel.RamSize"></span>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="LaptopViewModel.GraphicsCard"></label>
+                    <input class="form-control" asp-for="LaptopViewModel.GraphicsCard" name="LaptopViewModel.GraphicsCard" />
+                    <span class="text-danger" asp-validation-for="LaptopViewModel.GraphicsCard"></span>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="LaptopViewModel.OperatingSystem"></label>
+                    <select class="form-select" asp-for="LaptopViewModel.OperatingSystem" asp-items="Html.GetEnumSelectList<SystemType>()">
+                        <option value="">Select an operating system</option>
+                    </select>
+                </div>
+                <fieldset class="d-flex flex-column gap-3 my-1">
+                    <legend class="text-uppercase small letter-spacing-2 fw-bold m-0">Processor</legend>
+
+                    <div>
+                        <label class="form-label" asp-for="LaptopViewModel.Brand"></label>
+                        <select class="form-select" asp-for="LaptopViewModel.Brand" asp-items="Html.GetEnumSelectList<Brand>()">
+                            <option value="">Select a processor brand</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="LaptopViewModel.Brand"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="LaptopViewModel.Model"></label>
+                        <input class="form-control" asp-for="LaptopViewModel.Model" name="LaptopViewModel.Model" />
+                        <span class="text-danger" asp-validation-for="LaptopViewModel.Model"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="LaptopViewModel.CoreCount"></label>
+                        <input class="form-control" asp-for="LaptopViewModel.CoreCount" name="LaptopViewModel.CoreCount" />
+                        <span class="text-danger" asp-validation-for="LaptopViewModel.CoreCount"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="LaptopViewModel.ClockSpeedGHz"></label>
+                        <input class="form-control" asp-for="LaptopViewModel.ClockSpeedGHz" name="LaptopViewModel.ClockSpeedGHz" />
+                        <span class="text-danger" asp-validation-for="LaptopViewModel.ClockSpeedGHz"></span>
+                    </div>
+                </fieldset>
+                <fieldset class="d-flex flex-column gap-3 my-1">
+                    <legend class="text-uppercase small letter-spacing-2 fw-bold m-0">Storage Capacity</legend>
+
+                    <div>
+                        <label class="form-label" asp-for="LaptopViewModel.StorageCapacity"></label>
+                        <input class="form-control" asp-for="LaptopViewModel.StorageCapacity" name="LaptopViewModel.StorageCapacity" />
+                        <span class="text-danger" asp-validation-for="LaptopViewModel.StorageCapacity"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="LaptopViewModel.StorageUnit"></label>
+                        <select class="form-select" asp-for="LaptopViewModel.StorageUnit" asp-items="Html.GetEnumSelectList<StorageUnit>()">
+                            <option value="">Select a storage unit</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="LaptopViewModel.StorageUnit"></span>
+                    </div>
+                </fieldset>
+            </fieldset>
+        </div>
+        <div class="col-md-4">
+            <fieldset class="d-flex flex-column gap-3 border border-2 rounded p-3 mb-4">
+                <legend class="text-uppercase fs-5 fw-bold letter-spacing-2 m-0">Product Status</legend>
+                <div>
+                    <label class="d-flex flex-column" asp-for="LaptopViewModel.IsActive">
+                        <p class="form-label">IsActive</p>
+                        <div class="status-toggle">
+                            <input type="checkbox" asp-for="LaptopViewModel.IsActive" name="LaptopViewModel.IsActive" aria-label="Toggle status" />
+                            <span class="status-slider"></span>
+                        </div>
+                    </label>
+                    <span class="text-danger" asp-validation-for="LaptopViewModel.IsActive"></span>
+                </div>
+            </fieldset>
+            <fieldset class="d-flex flex-column gap-3 border border-2 rounded p-3 mb-4">
+                <legend class="text-uppercase fs-5 fw-bold letter-spacing-2 m-0">Pricing</legend>
+                <div>
+                    <label class="form-label" asp-for="LaptopViewModel.Price"></label>
+                    <input class="form-control" asp-for="LaptopViewModel.Price" name="LaptopViewModel.Price" />
+                    <span class="text-danger" asp-validation-for="LaptopViewModel.Price"></span>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>

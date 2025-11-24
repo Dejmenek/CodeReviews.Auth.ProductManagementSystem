@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProductManagementSystem.Web</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ProductManagementSystem.Web.styles.css" asp-append-version="true" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layout-container">
+        <nav id="sidebar" class="sidebar bg-white border-end d-flex flex-column">
+            <div class="d-flex px-2 py-2 sidebar-icon">
+                <button id="sidebarCollapse" class="btn btn-sm" type="button" aria-label="Toggle sidebar">
+                    <i id="sidebarToggleIcon" class="bi bi-list fs-4"></i>
+                </button>
+            </div>
+            <ul class="list-unstyled px-2 flex-grow-1">
+                <li>
+                    <a class="sidebar-link @(Context.Request.Path.Equals("/Index") || Context.Request.Path.Equals("/") ? "active" : "")" asp-area="" asp-page="/Index">
+                        <i class="bi bi-house"></i>
+                        <span class="sidebar-text">Home</span>
+                    </a>
+                </li>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <a class="sidebar-link @(Context.Request.Path.Equals("/Home") ? "active" : "")" asp-area="" asp-page="/Home">
+                            <i class="bi bi-speedometer2"></i>
+                            <span class="sidebar-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link @(Context.Request.Path.Equals("/Products/Index") ? "active" : "")" asp-area="" asp-page="/Products/Index">
+                            <i class="bi bi-box"></i>
+                            <span class="sidebar-text">Product Management</span>
+                        </a>
+                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a class="sidebar-link @(Context.Request.Path.StartsWithSegments("/Staff/Index") ? "active" : "")" asp-area="" asp-page="/Staff/Index">
+                                <i class="bi bi-people"></i>
+                                <span class="sidebar-text">Staff Management</span>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <div class="sidebar-logout px-2 pb-3">
+                    <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="m-0">
+                        <button type="submit" class="sidebar-link w-100 btn p-0 text-start">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span class="sidebar-text">Logout</span>
+                        </button>
+                    </form>
+                </div>
+            }
+        </nav>
+
+        <div class="main-content-wrapper" id="main-content">
+            <div class="card user-profile-card shadow-sm mb-2">
+                <div class="card-body py-2 px-3 d-flex align-items-center justify-content-end">
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <div class="dropdown">
+                            <button class="btn p-0 fw-semibold"
+                            type="button"
+                            id="userProfileDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            aria-haspopup="true">
+                                @User.Identity.Name
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                                        <i class="bi bi-person-circle me-2"></i> Settings
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    } else
+                    {
+                        <ul class="list-unstyled d-flex gap-2 m-0">
+                            <li>
+                                <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">
+                                    <i class="bi bi-pencil-square me-2"></i> Register
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i> Login
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+            <main role="main" class="main-content-area card">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

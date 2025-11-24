@@ -1,0 +1,55 @@
+@page "{productId:int}"
+@using ProductManagementSystem.Domain
+@model ProductManagementSystem.Web.Pages.Products.DetailsModel
+
+<h1>@Model.Product.Name</h1>
+<p>Price: @Model.Product.Price.ToString("C")</p>
+<p>Is Active: @(Model.Product.IsActive ? "Yes" : "No")</p>
+
+<h2>Specification</h2>
+
+<table class="table table-striped table-hover">
+    @if (Model.Product is Computer computer) {
+        <tr>
+            <th>Processor</th>
+            <td>@computer.Processor</td>
+        </tr>
+        <tr>
+            <th>RAM</th>
+            <td>@computer.RamSize</td>
+        </tr>
+        <tr>
+            <th>Storage</th>
+            <td>@computer.StorageCapacity</td>
+        </tr>
+        <tr>
+            <th>Graphics Card</th>
+            <td>@computer.GraphicsCard</td>
+        </tr>
+        <tr>
+            <th>Operating System</th>
+            <td>@computer.OperatingSystem</td>
+        </tr>
+    }
+    @if (Model.Product is Laptop laptop) {
+        <tr>
+            <th>Battery Life</th>
+            <td>@laptop.BatteryLife</td>
+        </tr>
+        <tr>
+            <th>Screen Size</th>
+            <td>@laptop.ScreenSize</td>
+        </tr>
+        <tr>
+            <th>Webcam Quality</th>
+            <td>@laptop.WebcamQuality</td>
+        </tr>
+    }
+    @if (Model.Product is Desktop desktop)
+    {
+        <tr>
+            <th>Case Type</th>
+            <td>@desktop.CaseType</td>
+        </tr>
+    }
+</table>
